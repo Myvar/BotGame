@@ -88,7 +88,7 @@ namespace DiscordBotGame
                 if (biggerPlayer.VoteCount > 0)
                 {
                     biggerPlayer.Tokens += 1;
-                    sb.AppendLine($"<@!{biggerPlayer.DiscordID}> Wone the vote");
+                    sb.AppendLine($"<@!{biggerPlayer.DiscordID}> won the vote");
                 }
 
                 foreach (var player in Program.WorldState.Players)
@@ -96,7 +96,7 @@ namespace DiscordBotGame
                     player.VoteCount = 0;
                 }
 
-                sb.AppendLine("A new Cycle has Completed and tokens dished out");
+                sb.AppendLine("A new Cycle has completed. Tokens have been distributed");
                 foreach (var player in Program.WorldState.Players)
                 {
                     sb.Append($"<@!{player.DiscordID}>");
@@ -135,7 +135,7 @@ namespace DiscordBotGame
             }
             else
             {
-                return ("404 Handler Not Found", null);
+                return ("404. Handler Not Found.", null);
             }
         }
     }
