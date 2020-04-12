@@ -22,7 +22,7 @@ namespace DiscordBotGame
         {
             var sb = new StringBuilder();
             sb.AppendLine(
-                "This bot is not ment for general public use and only for con-fuzies, for more help ask Myvar");
+                "This bot is not meant for general public use and only for CoN-FuZzie's. For more help contact Myvar.");
             sb.AppendLine("Here is a list of commands:");
 
             foreach (var handler in GameBotEngine.ImageHandlers)
@@ -44,7 +44,7 @@ namespace DiscordBotGame
         [Handler("reset")]
         public static string Reset(string cmd, SocketUser user)
         {
-            if (Program.WorldState.AdminID != user.Id) return "Imposter Alert, your no admin, release the worms";
+            if (Program.WorldState.AdminID != user.Id) return "Imposter Alert! You're no admin; release the worms!";
 
             Program.WorldState.Players.Clear();
 
@@ -99,26 +99,26 @@ namespace DiscordBotGame
             var id = ulong.Parse(segs[0].Split('!').Last().Trim().TrimEnd('>'));
             if (Program.WorldState.Players.All(x => x.DiscordID != id))
             {
-                return $"The Target <@!{user.Id}> has not joined the games!";
+                return $"The Target <@!{user.Id}> has not joined the game yet!";
             }
 
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
-                return $"The player <@!{user.Id}> has not joined the games!";
+                return $"The player <@!{user.Id}> has not joined the game yet!";
             }
 
             var target = Program.WorldState.Players.First(x => x.DiscordID == id);
             var self = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
 
-            if (self.Dead) return "Your dead, dead people cant do stuff";
-            if (target.Dead) return "You sick basterd attacking a dead person";
+            if (self.Dead) return "You're dead, dead people can't do stuff.";
+            if (target.Dead) return "You sick bastard! Attacking a dead person...";
 
             if (self.DiscordID == target.DiscordID)
                 return
                     "There is help for you: http://www.sadag.org/index.php?option=com_content&view=article&id=1904&Itemid=151";
 
             if (self.Tokens < 1)
-                return "Your out of go go juice, might wane talk to the doc about some blue ones.";
+                return "Your out of go-go juice, might wanna talk to the doc about some blue ones.";
 
             if ((int) Math.Truncate(target.Position.DistanceTo(self.Position)) <= self.Range)
             {
@@ -130,12 +130,12 @@ namespace DiscordBotGame
                     target.Dead = true;
                 }
 
-                return "Mom is on speed dial, Safety Squints Engaged, a pray and a hope for luck, FIRE";
+                return "Mom is on speed dial. Safety Squints Engaged. A pray and a hope for luck. FIRE!!!";
             }
             else
             {
                 return
-                    $"Your Target is {(int) Math.Truncate(target.Position.DistanceTo(self.Position)):F} units away and not in range your max range is: {self.Range}, Moron.";
+                    $"Your Target is {(int) Math.Truncate(target.Position.DistanceTo(self.Position)):F} units away and not within range. Your max range is {self.Range}, Moron.";
             }
         }
 
@@ -150,19 +150,19 @@ namespace DiscordBotGame
             var id = ulong.Parse(segs[0].Split('!').Last().Trim().TrimEnd('>'));
             if (Program.WorldState.Players.All(x => x.DiscordID != id))
             {
-                return $"The Target <@!{user.Id}> has not joined the games!";
+                return $"The Target <@!{user.Id}> has not joined the game yet!";
             }
 
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
-                return $"The player <@!{user.Id}> has not joined the games!";
+                return $"The player <@!{user.Id}> has not joined the game yet!";
             }
 
             var target = Program.WorldState.Players.First(x => x.DiscordID == id);
             var self = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
 
-            if (!self.Dead) return "Only the dead can fuck with the living";
-            if (target.Dead) return "Nice Try but voting for dead is old news.";
+            if (!self.Dead) return "Only the dead can fuck with the living.";
+            if (target.Dead) return "Nice try, but voting for the dead is old news.";
 
 
             if (self.DeadVoteCast)
@@ -172,7 +172,7 @@ namespace DiscordBotGame
             self.DeadVoteCast = true;
             target.VoteCount += 1;
 
-            return $"Cool you voted for <@!{target.DiscordID}>, shivers is running up his spine.";
+            return $"<@!{target.DiscordID}> feels shivers is running up their spine.";
         }
 
         [Handler("gift")]
@@ -184,7 +184,7 @@ namespace DiscordBotGame
 
             if (segs.Count <= 1)
             {
-                return "you need to tell me how meany bling to flash, ie: !gift <player> <amount>";
+                return "You need to tell me how much bling to flash. i.e. !gift <player> <amount>";
             }
 
             var amt = int.Parse(segs[1]);
@@ -203,15 +203,15 @@ namespace DiscordBotGame
             var target = Program.WorldState.Players.First(x => x.DiscordID == id);
             var self = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
 
-            if (self.Dead) return "Your dead, dead people cant do stuff";
-            if (target.Dead) return "You sad sad dude gifting the dead";
+            if (self.Dead) return "You're dead; dead people can't do stuff";
+            if (target.Dead) return "You sad sad dude gifting to the dead";
 
             if (self.DiscordID == target.DiscordID)
                 return
-                    "If you dont have friend, to give you stuff might wane consider working on that first.";
+                    "If you don't have friend to give stuff to, you might want consider working on finding some.";
 
             if (self.Tokens < amt)
-                return "Your out of bling, cant give what you dont have";
+                return "You're out of bling. Can't give what you dont have";
 
             if ((int)Math.Truncate(target.Position.DistanceTo(self.Position)) <= self.Range)
             {
@@ -223,7 +223,7 @@ namespace DiscordBotGame
             else
             {
                 return
-                    $"Your Target is {(int)Math.Truncate(target.Position.DistanceTo(self.Position)):F} units away and not in range your max range is: {self.Range}, Moron.";
+                    $"Your Target is {(int)Math.Truncate(target.Position.DistanceTo(self.Position)):F} units away and not within range. Your max range is {self.Range}, Moron.";
             }
         }
 
@@ -233,7 +233,7 @@ namespace DiscordBotGame
             if (!Program.WorldState.GameStarted) return "The game has not been started yet";
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
-                return $"The player <@!{user.Id}> has not joined the games!";
+                return $"The player <@!{user.Id}> has not joined the game yet!";
             }
 
             var segs = Utils.ParseCmd(cmd);
@@ -242,25 +242,25 @@ namespace DiscordBotGame
             var dir = Enum.Parse<Direction>(segs[0], true);
 
             var p = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
-            if (p.Dead) return "Your dead, dead people cant do stuff";
+            if (p.Dead) return "Your dead. Dead people can't do stuff";
             switch (dir)
             {
                 case Direction.N:
                     if ((int) p.Position.Y == 0)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yeah, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X && (int) x.Position.Y - 1 == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.Y -= 1;
@@ -270,19 +270,19 @@ namespace DiscordBotGame
                 case Direction.S:
                     if ((int) p.Position.Y == Program.WorldState.WorldSize)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yea, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X && (int) x.Position.Y + 1 == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.Y += 1;
@@ -291,19 +291,19 @@ namespace DiscordBotGame
                 case Direction.W:
                     if ((int) p.Position.X == 0)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yea, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X - 1 && (int) x.Position.Y == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.X -= 1;
@@ -313,19 +313,19 @@ namespace DiscordBotGame
                 case Direction.E:
                     if ((int) p.Position.X == Program.WorldState.WorldSize)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yea, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X + 1 && (int) x.Position.Y == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.X += 1;
@@ -334,19 +334,19 @@ namespace DiscordBotGame
                 case Direction.Ne:
                     if ((int) p.Position.X == Program.WorldState.WorldSize)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yea, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X + 1 && (int) x.Position.Y - 1 == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.X += 1;
@@ -356,19 +356,19 @@ namespace DiscordBotGame
                 case Direction.Nw:
                     if ((int) p.Position.X == Program.WorldState.WorldSize)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yea, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X - 1 && (int) x.Position.Y - 1 == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.X -= 1;
@@ -378,19 +378,19 @@ namespace DiscordBotGame
                 case Direction.Se:
                     if ((int) p.Position.X == Program.WorldState.WorldSize)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yea, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X - 1 && (int) x.Position.Y + 1 == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.X -= 1;
@@ -400,19 +400,19 @@ namespace DiscordBotGame
                 case Direction.Sw:
                     if ((int) p.Position.X == Program.WorldState.WorldSize)
                     {
-                        return "Yea, that side of the map seems a bit dark and void like, just no.";
+                        return "Yea, that side of the map seems a bit dark and void. Just no.";
                     }
 
                     if (Program.WorldState.Players.Any(x =>
                         (int) x.Position.X == (int) p.Position.X + 1 && (int) x.Position.Y + 1 == (int) p.Position.Y))
                     {
                         return
-                            "Another Player is already Occupying that space, if you want to attack use the attack command, otherwise use give";
+                            "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
                     }
 
                     if (p.Tokens < 1)
                     {
-                        return "You do not have enuf tokens to move";
+                        return "You do not have enough tokens to move.";
                     }
 
                     p.Position.X += 1;
@@ -457,7 +457,7 @@ namespace DiscordBotGame
                 return vec;
             }
 
-            if (Program.WorldState.Players.Any(x => x.DiscordID == user.Id)) return "You have already joined";
+            if (Program.WorldState.Players.Any(x => x.DiscordID == user.Id)) return "You have already joined.";
 
             var player = new Player()
             {
@@ -480,7 +480,7 @@ namespace DiscordBotGame
             if (!Program.WorldState.GameStarted) return "The game has not been started yet";
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
-                return $"The player <@!{user.Id}> has not joined the games!";
+                return $"The player <@!{user.Id}> has not joined the game yet!";
             }
 
             var p = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
@@ -504,7 +504,7 @@ namespace DiscordBotGame
         {
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
-                return $"The player <@!{user.Id}> has not joined the games!";
+                return $"The player <@!{user.Id}> has not joined the game yet!";
             }
 
             var p = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
@@ -514,11 +514,11 @@ namespace DiscordBotGame
                 p.Tokens -= Program.WorldState.RangeUpgradeCost;
                 p.Range += 1;
                 return
-                    $"Cool you paid {Program.WorldState.RangeUpgradeCost} tokens to upgrade your range with 1 to {p.Range}";
+                    $"Cool. You paid {Program.WorldState.RangeUpgradeCost} tokens to upgrade your range to {p.Range}";
             }
             else
             {
-                return "You cant afford it, poor Mother Fucker";
+                return "You can't afford it, poor mother fucker.";
             }
         }
         
@@ -527,7 +527,7 @@ namespace DiscordBotGame
         {
             if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
             {
-                return $"The player <@!{user.Id}> has not joined the games!";
+                return $"The player <@!{user.Id}> has not joined the game yet!";
             }
 
             var p = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
@@ -537,11 +537,11 @@ namespace DiscordBotGame
                 p.Tokens -= Program.WorldState.RangeUpgradeCost;
                 p.Health += 1;
                 return
-                    $"Cool you paid {Program.WorldState.RangeUpgradeCost} for meds. Your HP:{p.Health}";
+                    $"Cool. You paid {Program.WorldState.RangeUpgradeCost} for meds. Your HP is now {p.Health}";
             }
             else
             {
-                return "You cant afford it(or you already have 3 hp), poor Mother Fucker, die poor with out health";
+                return "You can't afford it or you already have 3 hp. Die soon you poor Mother Fucker. Die poor with zero health.";
             }
         }
     }
