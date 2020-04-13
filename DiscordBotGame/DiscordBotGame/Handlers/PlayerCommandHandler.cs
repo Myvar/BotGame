@@ -24,6 +24,7 @@ namespace DiscordBotGame
             sb.AppendLine(
                 "This bot is not meant for general public use and only for CoN-FuZzie's. For more help contact Myvar.");
             sb.AppendLine("Here is a list of commands:");
+			sb.AppendLine("Upgrade cost is {Program.WorldState.RangeUpgradeCost} and Health cost is {Program.WorldState.HealthUpgradeCost}");
 
             foreach (var handler in GameBotEngine.ImageHandlers)
             {
@@ -537,7 +538,7 @@ namespace DiscordBotGame
                 p.Tokens -= Program.WorldState.RangeUpgradeCost;
                 p.Health += 1;
                 return
-                    $"Cool. You paid {Program.WorldState.RangeUpgradeCost} for meds. Your HP is now {p.Health}";
+                    $"Cool. You paid {Program.WorldState.HealthUpgradeCost} for meds. Your HP is now {p.Health}";
             }
             else
             {
