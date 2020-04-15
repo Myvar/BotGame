@@ -24,7 +24,8 @@ namespace DiscordBotGame
             sb.AppendLine(
                 "This bot is not meant for general public use and only for CoN-FuZzie's. For more help contact Myvar.");
             sb.AppendLine("Here is a list of commands:");
-			sb.AppendLine($"Upgrade cost is {Program.WorldState.RangeUpgradeCost} and Health cost is {Program.WorldState.HealthUpgradeCost}");
+            sb.AppendLine(
+                $"Upgrade cost is {Program.WorldState.RangeUpgradeCost} and Health cost is {Program.WorldState.HealthUpgradeCost}");
 
             foreach (var handler in GameBotEngine.ImageHandlers)
             {
@@ -114,6 +115,12 @@ namespace DiscordBotGame
             if (self.Dead) return "You're dead, dead people can't do stuff.";
             if (target.Dead) return "You sick bastard! Attacking a dead person...";
 
+
+            if (DateTime.Now - self.AttackTimeCoolDown < TimeSpan.FromHours(4))
+            {
+                return "Your doing that to mutch(give the little guy a break), try again later.";
+            }
+
             if (self.DiscordID == target.DiscordID)
                 return
                     "There is help for you: http://www.sadag.org/index.php?option=com_content&view=article&id=1904&Itemid=151";
@@ -130,6 +137,8 @@ namespace DiscordBotGame
                 {
                     target.Dead = true;
                 }
+
+                self.AttackTimeCoolDown = DateTime.Now;
 
                 return "Mom is on speed dial. Safety Squints Engaged. A pray and a hope for luck. FIRE!!!";
             }
@@ -214,7 +223,7 @@ namespace DiscordBotGame
             if (self.Tokens < amt)
                 return "You're out of bling. Can't give what you dont have";
 
-            if ((int)Math.Truncate(target.Position.DistanceTo(self.Position)) <= self.Range)
+            if ((int) Math.Truncate(target.Position.DistanceTo(self.Position)) <= self.Range)
             {
                 target.Tokens += amt;
                 self.Tokens -= amt;
@@ -224,7 +233,7 @@ namespace DiscordBotGame
             else
             {
                 return
-                    $"Your Target is {(int)Math.Truncate(target.Position.DistanceTo(self.Position)):F} units away and not within range. Your max range is {self.Range}, Moron.";
+                    $"Your Target is {(int) Math.Truncate(target.Position.DistanceTo(self.Position)):F} units away and not within range. Your max range is {self.Range}, Moron.";
             }
         }
 
@@ -253,7 +262,7 @@ namespace DiscordBotGame
                     }
 
                     if (Program.WorldState.Players.Any(x =>
-                        (int) x.Position.X == (int) p.Position.X && (int) x.Position.Y - 1 == (int) p.Position.Y))
+                        (int) x.Position.X == (int) p.Position.X && (int) x.Position.Y - 1 == (int) p.Position.Y) && !p.Dead)
                     {
                         return
                             "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
@@ -522,7 +531,7 @@ namespace DiscordBotGame
                 return "You can't afford it, poor mother fucker.";
             }
         }
-        
+
         [Handler("heal")]
         public static string UpgradeHp(string cmd, SocketUser user)
         {
@@ -542,7 +551,8 @@ namespace DiscordBotGame
             }
             else
             {
-                return "You can't afford it or you already have 3 hp. Die soon you poor Mother Fucker. Die poor with zero health.";
+                return
+                    "You can't afford it or you already have 3 hp. Die soon you poor Mother Fucker. Die poor with zero health.";
             }
         }
     }

@@ -17,75 +17,83 @@ namespace DiscordBotGame
             if (!Program.WorldState.GameStarted) return null;
             var img = new Bitmap(1024, 1024);
             using (var g = Graphics.FromImage(img))
-            using (var compus = Bitmap.FromFile(Path.GetFullPath("./dir.png")))
+            using (var compus = Bitmap.FromFile(Path.GetFullPath("./face.png")))
             {
-                g.CompositingQuality = CompositingQuality.HighQuality;
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                g.Clear(Color.Black);
+               // g.SmoothingMode = SmoothingMode.HighQuality;
 
-                
+                g.Clear(Color.White);
 
-                var scale = 0.2f;
+                var worldSize = (float) Program.WorldState.WorldSize;
 
-                g.ScaleTransform(1f - scale, 1f - scale);
-                g.TranslateTransform((img.Width * scale) / 2f, (img.Height * scale) / 2f);
+                var cellSize = img.Width / (worldSize);
 
-                var worldSize = Program.WorldState.WorldSize;
-                var padding = 2;
-                var cellSize = img.Width / (worldSize + padding);
+                var xOffset = 0f;
 
+                var fontIndexSize = (cellSize / 3f) * 72f / g.DpiX;
 
-                for (int x = 0; x < (img.Width / cellSize) - 1; x++)
+                for (int x = 0; x < worldSize; x++)
                 {
-                    for (int y = 0; y < (img.Width / cellSize) - 1; y++)
-                    {
-                        g.FillRectangle(Brushes.White,
-                            (x * (cellSize + padding)) - (cellSize / 2f),
-                            (y * (cellSize + padding)) - (cellSize / 2f),
-                            cellSize, cellSize);
-                    }
+                    g.DrawLine(new Pen(Color.Black, 2f), xOffset, 0, xOffset, img.Height);
+
+
+                    g.DrawString(x.ToString(), new Font(FontFamily.GenericMonospace, fontIndexSize),
+                        new SolidBrush(Color.Gray),
+                        xOffset + 2,
+                        2);
+
+                    xOffset += cellSize;
                 }
-                g.DrawImage(compus, img.Width - 200, img.Height - 200, 250, 250);
-                //one sec mic is muted
+
+                var yOffset = 0f;
+
+                for (int x = 0; x < worldSize; x++)
+                {
+                    g.DrawLine(new Pen(Color.Black, 2f), 0, yOffset, img.Width, yOffset);
+
+
+                    if (x > 0)
+                        g.DrawString(x.ToString(), new Font(FontFamily.GenericMonospace, fontIndexSize),
+                            new SolidBrush(Color.Gray),
+                            2,
+                            yOffset + 2);
+
+                    yOffset += cellSize;
+                }
+
+
+               
+                
                 foreach (var player in Program.WorldState.Players)
                 {
                     if (player.Dead) continue;
+
                     using (var stream = _Client.OpenRead(player.ProfilePicture))
                     using (var bitmap = new Bitmap(stream))
                     {
-                        var p = new GraphicsPath();
-                        p.AddEllipse((player.Position.X * (cellSize + padding)) - (cellSize / 2f),
-                            (player.Position.Y * (cellSize + padding)) - (cellSize / 2f),
-                            cellSize, cellSize);
+                        g.DrawImage(bitmap, player.Position.X * cellSize,
+                            player.Position.Y * cellSize,
+                            cellSize,
+                            cellSize);
+                        g.FillRectangle(new SolidBrush(Color.FromArgb(70, Color.Black)),
+                            player.Position.X * cellSize,
+                            player.Position.Y * cellSize,
+                            cellSize,
+                            cellSize);
 
-                        g.SetClip(p);
-                        g.DrawImage(bitmap,
-                            (player.Position.X * (cellSize + padding)) - (cellSize / 2f),
-                            (player.Position.Y * (cellSize + padding)) - (cellSize / 2f),
-                            cellSize, cellSize);
-                        g.DrawEllipse(new Pen(Color.DarkCyan, 10),
-                            (player.Position.X * (cellSize + padding)) - (cellSize / 2f),
-                            (player.Position.Y * (cellSize + padding)) - (cellSize / 2f),
-                            cellSize, cellSize);
-                        g.ResetClip();
+                        var fontStatsSize = (cellSize / 2f) * 72f / g.DpiX;
 
-                        g.FillRectangle(
-                            new SolidBrush(Color.FromArgb(100, Color.Black)),
-                            (player.Position.X * (cellSize + padding)) - (cellSize / 2f),
-                            (player.Position.Y * (cellSize + padding)) - (cellSize / 2f),
-                            cellSize, cellSize);
-                        g.DrawString(player.Health.ToString(), new Font(FontFamily.GenericMonospace, 18),
-                            new SolidBrush(Color.Red), 2 + (player.Position.X * (cellSize + padding)) - (cellSize / 2f),
-                            (player.Position.Y * (cellSize + padding)) - (cellSize / 2f));
+                        g.DrawString(player.Health.ToString(), new Font(FontFamily.GenericMonospace, fontStatsSize),
+                            new SolidBrush(Color.Red),
+                            2 + player.Position.X * cellSize,
+                            player.Position.Y * cellSize);
 
-                        g.DrawString(player.Tokens.ToString(), new Font(FontFamily.GenericMonospace, 18),
+                        g.DrawString(player.Tokens.ToString(), new Font(FontFamily.GenericMonospace, fontStatsSize),
                             new SolidBrush(Color.Yellow),
-                            2 + (player.Position.X * (cellSize + padding)) - (cellSize / 2f),
-                            (player.Position.Y * (cellSize + padding)));
-                        
-                        
+                            2 + player.Position.X * cellSize,
+                            (cellSize / 2) + player.Position.Y * cellSize);
                     }
                 }
+                g.DrawImage(compus, (img.Width - compus.Width) / 2f, (img.Height - compus.Height) / 2f);
 
                 return img;
             }
