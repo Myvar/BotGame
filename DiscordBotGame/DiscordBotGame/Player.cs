@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace DiscordBotGame
 {
@@ -14,7 +15,9 @@ namespace DiscordBotGame
         public int Health { get; set; }
         public int Range { get; set; }
         public int VoteCount { get; set; }
-        
+
+        [JsonIgnore] public Player Target { get; set; }
+
         public DateTime AttackTimeCoolDown { get; set; }
     }
 }

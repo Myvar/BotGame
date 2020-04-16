@@ -109,7 +109,7 @@ namespace DiscordBotGame
 
         public static (string msg, Bitmap img) HandelCommand(string cmd, SocketUser user)
         {
-            if (!cmd.StartsWith("#"))
+            if (!cmd.StartsWith("~"))
             {
                 return (null, null);
             }

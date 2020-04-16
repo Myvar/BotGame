@@ -91,13 +91,10 @@ namespace DiscordBotGame
                 "Range",
                 "Tokens",
                 "Votes"
-                
             });
 
             foreach (var player in Program.WorldState.Players)
             {
-             
-
                 data.Add(new List<string>()
                 {
                     player.Name + "(" + (player.Dead ? "D" : "A") + ")",
@@ -108,7 +105,7 @@ namespace DiscordBotGame
                 });
             }
 
-            return "```" +  Utils.ToTable(data) + "```";
+            return "```" + Utils.ToTable(data) + "```";
         }
 
         [Handler("attack")]
@@ -453,7 +450,7 @@ namespace DiscordBotGame
             }
 
 
-            return $"Moving you {dir}";
+            return $"<@!{user.Id}> Moving you {dir}";
         }
 
         [Handler("join")]
@@ -551,6 +548,20 @@ namespace DiscordBotGame
             {
                 return "You can't afford it, poor mother fucker.";
             }
+        }
+
+        [Handler("eval")]
+        public static string Eval(string cmd, SocketUser user)
+        {
+            if (Program.WorldState.Players.All(x => x.DiscordID != user.Id))
+            {
+                return $"The player <@!{user.Id}> has not joined the game yet!";
+            }
+
+            var p = Program.WorldState.Players.First(x => x.DiscordID == user.Id);
+
+
+            return GCodeEngine.Eval(p, Program.WorldState, cmd.Remove(0, 4));
         }
 
         [Handler("heal")]
