@@ -20,7 +20,7 @@ namespace DiscordBotGame
         public int StartTokens = 3;
         public int StartHealth = 3;
         public int StartRange = 1;
-        public int TokensPerCycle = 1;
+        public int TokensPerCycle = 2;
         public int RangeUpgradeCost = 4;
         public int HealthUpgradeCost = 4;
         //Health Upgrade is redundant as far as I can tell seen as the offensive options available heavily outway the defensive option of healing. For the same cost you can kill and move.
