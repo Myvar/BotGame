@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Discord;
@@ -80,15 +81,34 @@ namespace DiscordBotGame
         public static string Players(string cmd, SocketUser user)
         {
             if (!Program.WorldState.GameStarted) return "The game has not been started yet";
-            var sb = new StringBuilder();
-            sb.AppendLine("Players");
+
+            var data = new List<List<string>>();
+
+            data.Add(new List<string>()
+            {
+                "Player",
+                "Health",
+                "Range",
+                "Tokens",
+                "Votes"
+                
+            });
+
             foreach (var player in Program.WorldState.Players)
             {
-                sb.AppendLine(
-                    $"@{player.Name}: [Tokens: {player.Tokens}; HP: {player.Health}; Votes: {player.VoteCount}]");
+             
+
+                data.Add(new List<string>()
+                {
+                    player.Name + "(" + (player.Dead ? "D" : "A") + ")",
+                    player.Health.ToString(),
+                    player.Range.ToString(),
+                    player.Tokens.ToString(),
+                    player.VoteCount.ToString()
+                });
             }
 
-            return sb.ToString();
+            return "```" +  Utils.ToTable(data) + "```";
         }
 
         [Handler("attack")]
@@ -262,7 +282,8 @@ namespace DiscordBotGame
                     }
 
                     if (Program.WorldState.Players.Any(x =>
-                        (int) x.Position.X == (int) p.Position.X && (int) x.Position.Y - 1 == (int) p.Position.Y) && !p.Dead)
+                            (int) x.Position.X == (int) p.Position.X && (int) x.Position.Y - 1 == (int) p.Position.Y) &&
+                        !p.Dead)
                     {
                         return
                             "Another Player is already occupying that space. If you want to attack use the attack command, otherwise use give.";
