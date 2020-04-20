@@ -17,13 +17,13 @@ namespace DiscordBotGame.Instructions
             {
                 return $"ERROR {p.Target.Name} is dead";
             }
-            
-            
+
+
             if (p.Tokens <= 0)
             {
                 return $"ERROR {p.Name} does not have enough tokens to attack {p.Target.Name}";
             }
-            
+
             if (DateTime.Now - p.AttackTimeCoolDown < TimeSpan.FromHours(4))
             {
                 return $"ERROR {p.Name} has a {(DateTime.Now - p.AttackTimeCoolDown).TotalHours} attack cooldown";
@@ -34,7 +34,7 @@ namespace DiscordBotGame.Instructions
                 return $"ERROR {p.Name} can not attack {p.Name}";
             }
 
-            if (!((int) Math.Truncate(p.Target.Position.DistanceTo(p.Position)) >= p.Range))
+            if (((int) Math.Truncate(p.Target.Position.DistanceTo(p.Position)) > p.Range))
             {
                 return $"ERROR {p.Target.Name} is out of range of {p.Name}";
             }
@@ -42,13 +42,13 @@ namespace DiscordBotGame.Instructions
             p.Target.Health -= 1;
             p.Tokens -= 1;
 
-            if (p.Health < 1)
+            if (p.Target.Health < 1)
             {
-                p.Dead = true;
+                p.Target.Dead = true;
             }
 
             p.AttackTimeCoolDown = DateTime.Now;
-            
+
             return $"{p.Name} attacked {p.Target.Name}";
         }
     }

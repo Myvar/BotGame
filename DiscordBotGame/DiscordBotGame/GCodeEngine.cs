@@ -89,7 +89,7 @@ namespace DiscordBotGame
             log.Append("```");
 
             foreach (var c in commands)
-            {
+            {//252114593629863946
                 log.AppendLine(_instructions[c.Instruction].Handel(p, ws.Players, c));
             }
 
