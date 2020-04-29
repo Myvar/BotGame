@@ -201,7 +201,10 @@ namespace DiscordBotGame
                 {
                     if (player.Dead) continue;
 
-                    using (var stream = _Client.OpenRead(player.ProfilePicture))
+                    var u = Program._client.GetUser(player.DiscordID);
+
+                    var url = u.AvatarId == null ? u.GetDefaultAvatarUrl() : u.GetAvatarUrl();
+                    using (var stream = _Client.OpenRead(url))
                     using (var bitmap = new Bitmap(stream))
                     {
                         g.DrawImage(bitmap, player.Position.X * cellSize,
@@ -250,7 +253,7 @@ namespace DiscordBotGame
                                 cellSize,
                                 cellSize);
                         }
-                        
+
                         if (player.VoteCount > biggerPlayer.VoteCount) biggerPlayer = player;
                     }
                 }
